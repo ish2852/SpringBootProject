@@ -1,5 +1,6 @@
 package com.sns.prj.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.sns.prj.domain.PostVO;
@@ -10,11 +11,11 @@ public interface PostService {
 
 	PostVO insertPost(Long userId, String title, String content);
 
-	List<PostVO> getPostList();
+	HashMap<String, Object> getPostListByPage(int page);
 
 	int deletePostById(Long postId);
 
-	List<PostVO> getPostListByUserId(Long userId);
+	HashMap<String, Object> getPostListByUserIdAndPage(Long userId, int page);
 
 	PostVO getPostAndWriterByPostId(Long postId);
 

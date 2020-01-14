@@ -2,6 +2,8 @@ package com.sns.prj.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -24,7 +26,7 @@ public interface FeedDAO extends CrudRepository<FeedVO, String>{
 
 	List<FeedVO> findAllByPostId(Long postId);
 
-	List<FeedVO> findAllByUserIdOrderByCreatedAtDesc(Long userId);
+	Page<FeedVO> findAllByUserIdOrderByCreatedAtDesc(Long userId, Pageable paging);
 
 
 }

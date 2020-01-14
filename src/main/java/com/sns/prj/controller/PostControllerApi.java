@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sns.prj.domain.PostVO;
@@ -46,23 +47,23 @@ public class PostControllerApi {
 	}
 
 	@GetMapping("/post")
-	public Object getPostList(@CookieValue(value = "accesstoken", required = false) String token) {
+	public Object getPostList(@CookieValue(value = "accesstoken", required = false) String token, @RequestParam(value = "page") int  page) {
 		Object data = null;
 		if (token != null) {
 			TokenVO tokenVO = tokenService.getTokenByToken(token);
-			data = postService.getPostListByUserId(tokenVO.getUserId());
+			data = postService.getPostListByUserIdAndPage(tokenVO.getUserId(), page);
 		} else {
-			data = postService.getPostList();
+			data = postService.getPostListByPage(page);
 		}
 		return data;
 	}
 
 	@GetMapping("/post/feed")
-	public Object getFeedPostListOfUser(@CookieValue(value = "accesstoken", required = false) String token) {
+	public Object getFeedPostListOfUser(@CookieValue(value = "accesstoken", required = false) String token, @RequestParam(value = "page") int  page) {
 		Object data = null;
 		if (token != null) {
 			TokenVO tokenVO = tokenService.getTokenByToken(token);
-			data = feedService.getFeedPostListByUserId(tokenVO.getUserId());
+			data = feedService.getFeedPostListByUserIdAndPage(tokenVO.getUserId(), page);
 		}
 		return data;
 	}

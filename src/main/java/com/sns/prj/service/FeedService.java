@@ -1,5 +1,6 @@
 package com.sns.prj.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.sns.prj.domain.PostVO;
@@ -10,6 +11,6 @@ public interface FeedService {
 
 	int deleteFeedByPostId(Long postId);
 
-	List<PostVO> getFeedPostListByUserId(Long userId);
+	HashMap<String, Object> getFeedPostListByUserIdAndPage(Long userId, int page);
 
 }

@@ -1,8 +1,13 @@
 package com.sns.prj.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.sns.prj.domain.FollowVO;
@@ -33,8 +38,15 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public List<PostVO> getPostList() {
-		return postDAO.findAllByOrderByCreatedAtDesc();
+	public HashMap<String, Object> getPostListByPage(int page) {
+		Pageable paging = PageRequest.of(page, 5);
+		
+		Page<PostVO> pageInfo = postDAO.findAllByOrderByCreatedAtDesc(paging);
+		
+		HashMap<String, Object> returnData = new HashMap<String, Object>();
+		returnData.put("post", pageInfo.getContent());
+		returnData.put("hasNextPage", pageInfo.hasNext());
+		return returnData;
 	}
 
 	@Override
@@ -55,8 +67,11 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public List<PostVO> getPostListByUserId(Long userId) {
-		List<PostVO> postList = postDAO.findAllByOrderByCreatedAtDesc();
+	public HashMap<String, Object> getPostListByUserIdAndPage(Long userId, int page) {
+		Pageable paging = PageRequest.of(page, 5);
+
+		Page<PostVO> pageInfo = postDAO.findAllByOrderByCreatedAtDesc(paging);
+		List<PostVO> postList = pageInfo.getContent();
 		List<FollowVO> followList = FollowDAO.findAllByFollowerId(userId);
 		
 		UserVO userVO = null;
@@ -66,9 +81,12 @@ public class PostServiceImpl implements PostService{
 			if(userVO.getId() != userId) {
 				UserUtil.setIsFollowByFollowListAndUser(followList, userVO);
 			}
-			
 		}
-		return postList;
+		
+		HashMap<String, Object> returnData = new HashMap<String, Object>();
+		returnData.put("post", postList);
+		returnData.put("hasNextPage", pageInfo.hasNext());
+		return returnData;
 	}
 
 	@Override

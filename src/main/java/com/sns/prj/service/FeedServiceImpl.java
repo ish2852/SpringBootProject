@@ -1,9 +1,13 @@
 package com.sns.prj.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sns.prj.domain.FeedVO;
@@ -52,13 +56,15 @@ public class FeedServiceImpl implements FeedService{
 	}
 
 	@Override
-	public List<PostVO> getFeedPostListByUserId(Long userId) {
+	public HashMap<String, Object> getFeedPostListByUserIdAndPage(Long userId, int page) {
+		Pageable paging = PageRequest.of(page, 5);
+		
 		List<PostVO> postList = new ArrayList<PostVO>();
-		List<FeedVO> feedList = feedDAO.findAllByUserIdOrderByCreatedAtDesc(userId);
+		Page<FeedVO> pageInfo = feedDAO.findAllByUserIdOrderByCreatedAtDesc(userId, paging);
 		List<FollowVO> followList = followDAO.findAllByFollowerId(userId);
 		
 		PostVO postVO = null;
-		for(FeedVO feedVO : feedList) {
+		for(FeedVO feedVO : pageInfo.getContent()) {
 			postVO = feedVO.getPost();
 			
 			if(postVO.getUserId() != userId) {
@@ -68,6 +74,10 @@ public class FeedServiceImpl implements FeedService{
 			postList.add(postVO);
 		}
 		
-		return postList;
+		HashMap<String, Object> returnData = new HashMap<String, Object>();
+		returnData.put("post", postList);
+		returnData.put("hasNextPage", pageInfo.hasNext());		
+		return returnData;
 	}
+	
 }
