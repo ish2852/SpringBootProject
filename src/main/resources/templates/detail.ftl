@@ -37,7 +37,7 @@
           <h1 class="mt-4" id="detail_title"></h1>
 
           <p class="lead">
-            by <span id="detail_user"></span>
+            by <span id="detail_user"></span> views <span id="detail_views"></span>
           </p>
 
           <hr>

@@ -20,4 +20,8 @@ public interface PostService {
 	PostVO getPostAndWriterByPostId(Long postId);
 
 	int updatePost(Long id, String title, String content);
+	
+	void setViewsByPostMap(HashMap<String, Object> postMap);
+
+	Long incrementViewsByPostId(Long postId);
 }

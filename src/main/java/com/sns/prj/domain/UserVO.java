@@ -1,5 +1,6 @@
 package com.sns.prj.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -26,7 +27,8 @@ import lombok.ToString;
 @ToString()
 @Entity
 @Table(name="user")
-public class UserVO {
+public class UserVO implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sns.prj.domain.FollowVO;
 import com.sns.prj.domain.TokenVO;
 import com.sns.prj.domain.UserVO;
-import com.sns.prj.service.FeedService;
 import com.sns.prj.service.FollowService;
 import com.sns.prj.service.TokenService;
 import com.sns.prj.service.UserService;
@@ -24,8 +23,6 @@ public class UserControllerApi {
 	private TokenService tokenService;
 	@Autowired
 	private FollowService followService;
-	@Autowired
-	private FeedService feedService;
 
 
 	@GetMapping("/user")

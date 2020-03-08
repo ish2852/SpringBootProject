@@ -17,6 +17,7 @@ $(document).ready(function(){
        $('#detail_user').text(data.data.user.username);
        $('#detail_date').text(data.data.createdAt);
        $('#detail_content').text(data.data.content);
+       $('#detail_views').text(data.data.views);
        writerCheck(data.data.userId);
     }, function(err) {
     	console.log(err.responseJSON);

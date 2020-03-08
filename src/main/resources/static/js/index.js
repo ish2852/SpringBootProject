@@ -1,5 +1,4 @@
-$(document).ready(function(){
-	
+$(document).ready(function(){	
 	var token;
 	var isAllPosts=true;
 	var postPage=0;
@@ -24,6 +23,7 @@ $(document).ready(function(){
 	    				+ '" class="btn btn-primary">Read More &rarr;</a> </div> ' 
 	    				+ '<div class="card-footer text-muted"> Posted on ' + e.createdAt.split('T')[0]
 	    				+ ' by ' + e.user.username + getFollowInfo(e.user)
+	    				+ ' views ' + e.views
 	    				+ '</div> </div>');
 	    	});
 	    	
@@ -55,6 +55,7 @@ $(document).ready(function(){
 		    				+ '" class="btn btn-primary">Read More &rarr;</a> </div> ' 
 		    				+ '<div class="card-footer text-muted"> Posted on ' + e.createdAt.split('T')[0]
 		    				+ ' by ' + e.user.username + getFollowInfo(e.user)
+		    				+ ' views ' + e.views
 		    				+ '</div> </div>');
 		    	});
 		    	

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +57,7 @@ public class FeedServiceImpl implements FeedService{
 	}
 
 	@Override
+	@Cacheable(value= "feedList", key = "{#userId, #page}", cacheManager="cacheManager")
 	public HashMap<String, Object> getFeedPostListByUserIdAndPage(Long userId, int page) {
 		Pageable paging = PageRequest.of(page, 5);
 		

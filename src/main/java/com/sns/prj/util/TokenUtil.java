@@ -3,25 +3,24 @@ package com.sns.prj.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 public class TokenUtil {
 
 	public static String makeToken() {
-		SecureRandom secureRandom;
-		StringBuffer sb = new StringBuffer();
+		String token = null;
 		try {
-			secureRandom = SecureRandom.getInstance("SHA1PRNG");
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			secureRandom.setSeed(secureRandom.generateSeed(128));
-
-			byte byteData[] = digest.digest((secureRandom.nextLong() + "").getBytes());
-			for (int i = 0; i < byteData.length; i++) {
-				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-			}
+				MessageDigest digest = MessageDigest.getInstance("SHA-256");
+				SecureRandom random = new SecureRandom();
+				byte bytes[] = new byte[128];
+				random.nextBytes(bytes);
+				token = Base64.getEncoder().encodeToString(digest.digest());
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			sb = null;
+			token = null;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return sb.toString();
+		return token;
 	}
 }

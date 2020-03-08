@@ -1,5 +1,6 @@
 package com.sns.prj.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -29,7 +31,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "post")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PostVO {
+public class PostVO implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -46,6 +49,10 @@ public class PostVO {
 	@JoinColumn(name = "userId", referencedColumnName = "id")
 	@JsonProperty(value = "user")
 	private UserVO userVO;
+	
+	@Transient
+	@JsonProperty(value = "views")
+	private Long views;
 
 	public PostVO() {
 	}

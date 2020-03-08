@@ -25,6 +25,11 @@ body {
 		padding-top: 56px;
 	}
 }
+
+#pageButton(){
+	visibility:hidden;
+}
+
 </style>
 </head>
 

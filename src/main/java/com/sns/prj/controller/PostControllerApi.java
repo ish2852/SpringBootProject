@@ -1,5 +1,7 @@
 package com.sns.prj.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,30 +49,37 @@ public class PostControllerApi {
 	}
 
 	@GetMapping("/post")
-	public Object getPostList(@CookieValue(value = "accesstoken", required = false) String token, @RequestParam(value = "page") int  page) {
-		Object data = null;
+	public Object getPostList(@CookieValue(value = "accesstoken", required = false) String token,
+			@RequestParam(value = "page") int page) {
+		HashMap<String, Object> data = null;
 		if (token != null) {
 			TokenVO tokenVO = tokenService.getTokenByToken(token);
 			data = postService.getPostListByUserIdAndPage(tokenVO.getUserId(), page);
 		} else {
 			data = postService.getPostListByPage(page);
 		}
+		postService.setViewsByPostMap(data);
 		return data;
 	}
 
 	@GetMapping("/post/feed")
-	public Object getFeedPostListOfUser(@CookieValue(value = "accesstoken", required = false) String token, @RequestParam(value = "page") int  page) {
-		Object data = null;
+	public Object getFeedPostListOfUser(@CookieValue(value = "accesstoken", required = false) String token,
+			@RequestParam(value = "page") int page) {
+		HashMap<String, Object> data = null;
 		if (token != null) {
 			TokenVO tokenVO = tokenService.getTokenByToken(token);
 			data = feedService.getFeedPostListByUserIdAndPage(tokenVO.getUserId(), page);
 		}
+		postService.setViewsByPostMap(data);
 		return data;
 	}
 
 	@GetMapping("/post/{postId}")
 	public Object getPost(@PathVariable Long postId) {
-		return postService.getPostAndWriterByPostId(postId);
+		PostVO postVO = postService.getPostAndWriterByPostId(postId);
+		Long views = postService.incrementViewsByPostId(postId);
+		postVO.setViews(views);
+		return postVO;
 	}
 
 	@DeleteMapping("/post/{postId}")
@@ -83,7 +92,7 @@ public class PostControllerApi {
 			TokenVO tokenVO = tokenService.getTokenByToken(token);
 			postVO = postService.getPostByIdAndUserId(postId, tokenVO.getUserId());
 		}
-		
+
 		if (postVO != null) {
 			feedService.deleteFeedByPostId(postId);
 			successBySql = postService.deletePostById(postId);
